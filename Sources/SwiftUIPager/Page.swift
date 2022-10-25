@@ -29,7 +29,7 @@ public class Page: ObservableObject {
           guard isInfinite else {
             return _index = min(totalPages - 1, max(0, newValue))
           }
-          _index = (newValue + totalPages) % totalPages
+          _index = totalPages > 0 ? ((newValue + totalPages) % totalPages) : 0
         }
     }
 
