@@ -390,15 +390,20 @@ extension Pager.PagerContent {
         if page != newPage {
             onPageWillChange?(newPage)
             onPageWillTransition?(.success(.init(currentPage: page, nextPage: newPage, pageIncrement: pageIncrement)))
+            onPageChanged?(newPage)
         } else {
             onPageWillTransition?(.failure(.draggingStopped))
         }
         withAnimation(animation) {
             self.pagerModel.draggingOffset = 0
-            self.pagerModel.pageIncrement = pageIncrement
+            if pageIncrement != 0 {
+                 self.pagerModel.pageIncrement = pageIncrement
+            }
+            if page != newPage {
+                self.pagerModel.index = newPage
+            }
             self.pagerModel.draggingVelocity = 0
             self.pagerModel.lastDraggingValue = nil
-            self.pagerModel.index = newPage
             self.pagerModel.lastDigitalCrownPageOffset = CGFloat(pagerModel.index)
             self.pagerModel.objectWillChange.send()
             #if os(watchOS)
